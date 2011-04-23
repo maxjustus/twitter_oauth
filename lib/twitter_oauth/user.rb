@@ -19,11 +19,11 @@ module TwitterOAuth
     end 
 
     # Returns all pages of friends
-    def all_friends
+    def all_friends(username = false)
       users = []
       cursor = "-1"
       while cursor != 0 do 
-        json = get("/statuses/friends.json?cursor=#{cursor}")
+        json = get("/statuses/friends#{username ? "/#{username}" : ''}.json?cursor=#{cursor}")
         cursor = json["next_cursor"]
         users += json["users"]
       end
@@ -45,11 +45,11 @@ module TwitterOAuth
     end 
 
     # Returns all pages of followers
-    def all_followers
+    def all_followers(username = false)
       users = []
       cursor = "-1"
       while cursor != 0 do 
-        json = get("/statuses/followers.json?cursor=#{cursor}")
+        json = get("/statuses/followers#{username ? "/#{username}" : ''}.json?cursor=#{cursor}")
         cursor = json["next_cursor"]
         users += json["users"]
       end
