@@ -29,19 +29,31 @@ module TwitterOAuth
       end
       users
     end
+
+    # Returns all pages of friends
+    def all_friend_ids(username = false)
+      ids = []
+      cursor = "-1"
+      while cursor != 0 do 
+        json = get("/friends/ids.json?cursor=#{cursor}#{username ? "&screen_name=#{username}" : ''}")
+        cursor = json["next_cursor"]
+        ids += json["ids"]
+      end
+      ids
+    end
     
     # Returns the 100 last followers
     def followers(page=1)
       return get("/statuses/followers.json?page=#{page}") if page == 1
-      users = []
+      ids = []
       cursor = "-1"
       page.times do 
         return [] if cursor == 0 
         json = get("/statuses/followers.json?cursor=#{cursor}")
         cursor = json["next_cursor"]
-        users = json["users"]
+        ids = json["ids"]
       end
-      users
+      ids
     end 
 
     # Returns all pages of followers
@@ -54,6 +66,18 @@ module TwitterOAuth
         users += json["users"]
       end
       users
+    end
+
+    # Returns all pages of friends
+    def all_follower_ids(username = false)
+      ids = []
+      cursor = "-1"
+      while cursor != 0 do 
+        json = get("/followers/ids.json?cursor=#{cursor}#{username ? "&screen_name=#{username}" : ''}")
+        cursor = json["next_cursor"]
+        ids += json["ids"]
+      end
+      ids
     end
 
   end
