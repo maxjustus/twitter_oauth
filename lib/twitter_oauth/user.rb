@@ -41,6 +41,11 @@ module TwitterOAuth
       end
       ids
     end
+
+    def user_lookup(users, type = 'id')
+      arg_name = type == 'id' ? 'user_id' : 'screen_name'
+      return get("/users/lookup.json?#{arg_name}=#{users.join(',')}")
+    end
     
     # Returns the 100 last followers
     def followers(page=1)
