@@ -69,7 +69,7 @@ module TwitterOAuth
       end
       
       def get(path, headers={})
-        headers.merge!("User-Agent" => "twitter_oauth gem v#{TwitterOAuth::VERSION}", "Accept-Encoding" => "deflate, gzip")
+        headers.merge!("User-Agent" => "twitter_oauth gem v#{TwitterOAuth::VERSION}")
         oauth_response = access_token.get("/1#{path}", headers)
         JSON.parse(oauth_response.body)
       end
